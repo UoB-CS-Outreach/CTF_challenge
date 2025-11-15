@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of Bradford CTF Challenge - Introduction to Cybersecurity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #581c87 50%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .trophy-icon {
+            color: #fbbf24;
+            font-size: 3rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #e9d5ff;
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            color: #e9d5ff;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 1rem;
+            background-color: #334155;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80 0%, #10b981 100%);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .challenges {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .challenge {
+            background-color: #1e293b;
+            border: 2px solid #7c3aed;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .challenge:hover {
+            border-color: #a78bfa;
+        }
+
+        .challenge.completed {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #1e293b 0%, #064e3b 100%);
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-title-section {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .challenge-icon {
+            width: 3rem;
+            height: 3rem;
+            background-color: #7c3aed;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .challenge.completed .challenge-icon {
+            background-color: #16a34a;
+        }
+
+        .challenge-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-tags {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .tag-category {
+            background-color: #7c3aed;
+        }
+
+        .tag-easy {
+            background-color: #16a34a;
+        }
+
+        .tag-medium {
+            background-color: #ca8a04;
+        }
+
+        .tag-difficult {
+            background-color: #9e1010;
+        }
+
+        .check-icon {
+            color: #4ade80;
+            font-size: 2rem;
+        }
+
+        .challenge-description {
+            background-color: #334155;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #e9d5ff;
+        }
+
+        .code-snippet {
+            background-color: #000;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-snippet pre {
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .email-header {
+            padding: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .email-logo {
+            width: 100px;
+            height: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .email-from {
+            color: #374151;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-from strong {
+            color: #111827;
+        }
+
+        .email-subject {
+            color: #111827;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .email-body {
+            padding: 1.5rem;
+            background-color: #ffffff;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .email-link {
+            display: inline-block;
+            margin: 1rem 0;
+            padding: 0.75rem 1.5rem;
+            background-color: #ff9900;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+
+        .email-link.suspicious {
+            background-color: #dc2626;
+        }
+
+        .email-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .email-label {
+            display: inline-block;
+            background-color: #7c3aed;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .login-simulator {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-simulator h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .login-button:hover {
+            background-color: #6d28d9;
+        }
+
+        .sql-query-display {
+            background-color: #1e293b;
+            color: #4ade80;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .login-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .login-result.success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .login-result.failure {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .flag-reveal {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .download-section {
+            background-color: #334155;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-button {
+            display: inline-block;
+            background-color: #7c3aed;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .download-button:hover {
+            background-color: #6d28d9;
+        }
+
+        .hint-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fbbf24;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .hint-button:hover {
+            color: #fde047;
+        }
+
+        .hint-box {
+            background-color: rgba(202, 138, 4, 0.2);
+            border-left: 4px solid #fbbf24;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            color: #fef3c7;
+            display: none;
+        }
+
+        .hint-box.visible {
+            display: block;
+        }
+
+        .answer-section {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-input {
+            flex: 1;
+            background-color: #334155;
+            border: 2px solid #7c3aed;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #a78bfa;
+        }
+
+        .submit-button {
+            background-color: #7c3aed;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background-color: #6d28d9;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback.visible {
+            display: flex;
+        }
+
+        .feedback-incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .feedback-correct {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border-left: 4px solid #22c55e;
+        }
+
+        .explanation {
+            background-color: #334155;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            display: none;
+        }
+
+        .explanation.visible {
+            display: block;
+        }
+
+        .explanation h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .explanation p {
+            line-height: 1.6;
+            color: #e9d5ff;
+            margin-bottom: 1rem;
+        }
+
+        .explanation h4 {
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .explanation ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .explanation li {
+            color: #e9d5ff;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .explanation li::before {
+            content: "•";
+            color: #4ade80;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .completion-banner {
+            background: linear-gradient(90deg, #16a34a 0%, #059669 100%);
+            padding: 3rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .completion-banner.visible {
+            display: block;
+        }
+
+        .completion-banner .trophy-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .completion-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-banner p {
+            font-size: 1.25rem;
+            color: #d1fae5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #c4b5fd;
+            font-size: 0.875rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .challenge {
+                padding: 1.5rem;
+            }
+
+            .answer-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <span class="trophy-icon">🏆</span>
+                University of Bradford CTF Challenge
+            </h1>
+            <p class="subtitle">An Introduction to Cybersecurity Fundamentals</p>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>Progress</span>
+                    <span><span id="completed-count">0</span> / <span id="total-count">9</span> completed</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="challenges" id="challenges-container"></div>
+
+        <div class="completion-banner" id="completion-banner">
+            <span class="trophy-icon">🏆</span>
+            <h2>Congratulations!</h2>
+            <p>You've completed all beginner CTF challenges and learned fundamental cybersecurity concepts!</p>
+        </div>
+
+        <footer>
+            <p>These challenges teach real cybersecurity concepts in a safe, educational environment.</p>
+            <p>Remember: Only use these skills ethically and legally!</p>
+        </footer>
+    </div>
+
+    <script>
+        const challenges = [
+            {
+                id: 'base64',
+                title: 'The Secret Message',
+                category: 'Encoding',
+                difficulty: 'Easy',
+                icon: '💻',
+                description: 'You intercepted a suspicious message: "Q1RGe1dlbGNvbWVfdG9fY3liZXJzZWN1cml0eX0=". It looks like gibberish, but you suspect it\'s encoded. Can you decode it?',
+                hint: 'Various different types of encoding schemes exist, each desgined for specific types of data and for specific purposes. Some common types of encoding include ASCII, Unicode, Base64, URL and Binary. Try searching for different online decoders to find a decoded message that makes the most sense.',
+                flag: 'CTF{Welcome_to_cybersecurity}',
+                explanation: 'Base64 is an encoding method that converts binary data into ASCII text. It\'s commonly used in emails, URLs, and web applications. The "=" signs are padding characters. While not encryption, it can hide data from casual observation.',
+                learningPoints: [
+                    'Encoding is NOT the same as encryption',
+                    'Base64 is easily reversible and provides no security',
+                    'Always check for common encoding patterns in suspicious data'
+                ]
+            },
+            {
+                id: 'caesar',
+                title: 'Caesar\'s Secret',
+                category: 'Cryptography',
+                difficulty: 'Easy',
+                icon: '🔒',
+                description: 'An ancient cipher method was used to encrypt this message: "FWI{Fdhvdu_zdv_khuh}". Each letter has been shifted by a fixed number. Can you crack it?',
+                hint: 'This is a Caesar cipher - each letter is shifted by the same number. Try to figure out how many positions the letters have been shifted to decrypt the message. EXTRA HINT: Since you know the format of the answer is "CTF{...}", three letters have alreaady been decrypted 👀',
+                flag: 'CTF{Caesar_was_here}',
+                explanation: 'The Caesar cipher, used by Julius Caesar, shifts each letter by a fixed number. It\'s one of the oldest known ciphers but is extremely weak because there are only 25 possible shifts to try.',
+                learningPoints: [
+                    'Simple substitution ciphers are easy to break',
+                    'Historical ciphers teach us cryptography principles',
+                    'Modern encryption uses much more complex mathematics'
+                ]
+            },
+            {
+                id: 'inspect',
+                title: 'Hidden in Plain Sight',
+                category: 'Web Security',
+                difficulty: 'Easy',
+                icon: '👁️',
+                description: 'A developer accidentally left something in the HTML comments of their webpage. Look at the code snippet below and find the flag!',
+                hint: 'HTML comments are written between "<!-- and -->". Developers sometimes leave sensitive information in comments, thinking users won\'t see them. Right-click on the webpage and select "Inspect" to see the HTML code, including comments!',
+                flag: 'CTF{Always_check_the_source}',
+                explanation: 'HTML comments are visible to anyone who views the page source. Developers sometimes accidentally leave sensitive information like API keys, passwords, or internal notes in comments. This is a common security mistake!',
+                codeSnippet: `<html>
+  <head>
+    <title>Super Secure Website</title>
+    <!-- TODO: Remove this before going live! -->
+    <!-- Flag: CTF{Always_check_the_source} -->
+  </head>
+  <body>
+    <h1>Welcome!</h1>
+  </body>
+</html>`,
+                learningPoints: [
+                    'Always inspect the source code of web pages',
+                    'Comments and hidden elements can reveal sensitive data',
+                    'Never put passwords or secrets in client-side code'
+                ]
+            },
+            {
+                id: 'metadata',
+                title: 'The Photo Detective',
+                category: 'Digital Forensics',
+                difficulty: 'Easy',
+                icon: '🔍',
+                description: 'You found a photo online and need to know where it was taken. The location is hidden in the image metadata. Examine this EXIF data to find the city name in the GPS coordinates.',
+                hint: 'EXIF data stores information like camera settings, date, and GPS location. The coordinates 51.5074° N, 0.1278° W point to a famous city. You can search these coordinates on Google Maps or look up "GPS coordinates to city".',
+                flag: 'CTF{London}',
+                metadataSnippet: `Camera: iPhone 12 Pro
+Date: 2024-10-15 14:32:18
+GPS Latitude: 51.5074° N
+GPS Longitude: 0.1278° W
+Altitude: 15m`,
+                explanation: 'EXIF (Exchangeable Image File Format) data stores metadata in images. This can include GPS coordinates showing exactly where a photo was taken. Many people don\'t realise their photos contain this information, which can be a privacy risk!',
+                learningPoints: [
+                    'Photos contain hidden metadata that can reveal your location',
+                    'Social media often strips EXIF data for privacy',
+                    'You should remove metadata before sharing sensitive photos'
+                ]
+            },
+            {
+                id: 'password',
+                title: 'Weak Password Alert',
+                category: 'Password Security',
+                difficulty: 'Easy',
+                icon: '🔒',
+                description: 'You found a password hash: "5f4dcc3b5aa765d61d8327deb882cf99". This is an MD5 hash of a common weak password. Can you crack it?',
+                hint: 'MD5 hashes are outdated and can be cracked using online databases of common passwords. Try searching "MD5 decrypt" or "MD5 hash lookup" and paste the hash. The password is one of the most common passwords ever used...',
+                flag: 'CTF{password}',
+                explanation: 'MD5 is a cryptographic hash function that\'s no longer considered secure. Billions of common passwords have been hashed with MD5 and stored in databases, making it trivial to reverse common passwords. This is why modern systems use stronger hashing algorithms like bcrypt or Argon2.',
+                learningPoints: [
+                    'Never use common passwords like "password" or "123456"',
+                    'MD5 is outdated and should not be used for passwords',
+                    'Strong hashing algorithms make password cracking much harder'
+                ]
+            },
+            {
+                id: 'plaintext',
+                title: 'Hidden in Plain Text',
+                category: 'File Analysis',
+                difficulty: 'Easy',
+                icon: '📄',
+                description: 'Open the text file and look closely — don\'t forget to scroll!',
+                hint: 'Sometimes secrets hide at the bottom... Download the file and scroll all the way to the end. The flag is hidden in plain sight!',
+                flag: 'CTF{found_at_the_bottom}',
+                hasFile: true,
+                fileContent: `Welcome to the CTF Challenge!
+
+This is a simple text file.
+Nothing suspicious here.
+Just some regular text.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+Keep reading...
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
+
+More text here.
+Still nothing interesting.
+Just filler content.
+
+Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui.
+Vivamus quis mi. Phasellus a est. Phasellus magna. In hac habitasse platea dictumst. Curabitur at lacus ac velit ornare lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Sed hendrerit. Morbi ac felis. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede. Donec interdum, metus et hendrerit aliquet, dolor diam sagittis ligula, eget egestas libero turpis vel mi. Nunc nulla. Fusce risus nisl, viverra et, tempor et, pretium in, sapien. Donec venenatis vulputate lorem. Morbi nec metus. Phasellus blandit leo ut odio. Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem.
+
+Getting closer...
+
+Aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque facilisis. Etiam imperdiet imperdiet orci. Nunc nec neque. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Maecenas malesuada. Praesent congue erat at massa. Sed cursus turpis vitae tortor. Donec posuere vulputate arcu. Phasellus accumsan cursus velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed aliquam, nisi quis porttitor congue, elit erat euismod orci, ac
+
+Keep scrolling...
+
+Phasellus consectetuer vestibulum elit. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vestibulum fringilla pede sit amet augue. In turpis. Pellentesque posuere. Praesent turpis. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Donec elit libero, sodales nec, volutpat a, suscipit non, turpis. Nullam sagittis. Suspendisse pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id purus. Ut varius tincidunt libero. Phasellus dolor.
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id purus. Ut varius tincidunt libero. Phasellus dolor. Maecenas vestibulum mollis diam. Pellentesque ut neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In dui magna, posuere eget, vestibulum et, tempor auctor, justo. In ac felis quis tortor malesuada pretium. Pellentesque auctor neque nec urna. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Aenean viverra rhoncus pede. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut non enim eleifend felis pretium feugiat. Vivamus quis mi. Phasellus a est. Phasellus magna. In hac habitasse platea dictumst. Curabitur at lacus ac velit ornare lobortis. Curabitur a felis in nunc fringilla tristique.
+
+Just a bit more...
+
+Morbi nec metus. Phasellus blandit leo ut odio. Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. In auctor lobortis lacus. Quisque libero metus, condimentum nec, tempor a, commodo mollis, magna. Vestibulum ullamcorper mauris at ligula. Fusce fermentum. Nullam cursus lacinia erat. Praesent blandit laoreet nibh. Fusce convallis metus id felis luctus adipiscing. Pellentesque egestas, neque sit amet convallis pulvinar, justo nulla eleifend augue, ac auctor orci leo non est. Quisque id mi. Ut tincidunt tincidunt erat. Etiam feugiat lorem non metus. Vestibulum dapibus nunc ac augue. Curabitur vestibulum aliquam leo. Praesent egestas neque eu enim. In hac habitasse platea dictumst. Fusce a quam. Etiam ut purus mattis mauris.
+Vestibulum ullamcorper mauris at ligula. Fusce fermentum. Nullam cursus lacinia erat. Praesent blandit laoreet nibh. Fusce convallis metus id felis luctus adipiscing. Pellentesque egestas, neque sit amet convallis pulvinar, justo nulla eleifend augue, ac auctor orci leo non est. Quisque id mi. Ut tincidunt tincidunt erat. Etiam feugiat lorem non metus. Vestibulum dapibus nunc ac augue. Curabitur vestibulum aliquam leo. Praesent egestas neque eu enim. In hac habitasse platea dictumst. Fusce a quam. Etiam ut purus mattis mauris sodales aliquam. Curabitur nisi. Quisque malesuada placerat nisl. Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel, lacus. Sed augue ipsum, egestas nec, vestibulum et, malesuada adipiscing, dui. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod ligula urna in dolor. Mauris sollicitudin fermentum libero. Praesent nonummy mi in odio. Nunc interdum lacus sit amet orci. Vestibulum rutrum, mi nec elementum vehicula, eros quam gravida nisl, id fringilla neque ante vel mi. Morbi mollis tellus ac sapien. Phasellus volutpat, metus eget egestas mollis, lacus lacus blandit dui, id egestas quam mauris ut lacus. Fusce vel dui. Sed in libero ut nibh placerat accumsan. Proin faucibus arcu quis ante. In consectetuer turpis ut velit. Nulla sit amet est. Praesent metus tellus, elementum eu, semper a, adipiscing nec, purus. Cras risus ipsum, faucibus ut, ullamcorper id, varius ac, leo. Suspendisse feugiat. Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi. Praesent nec nisl a purus blandit viverra. Praesent ac massa at ligula laoreet iaculis. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Mauris turpis nunc, blandit et, volutpat molestie, porta ut, ligula. Fusce pharetra convallis urna. Quisque ut nisi. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Congratulations! You found the flag: CTF{found_at_the_bottom}`,
+                fileName: 'challenge1.txt',
+                explanation: 'Many files contain hidden information that isn\'t immediately visible. Attackers often hide data at the end of files, in comments, or in areas users typically don\'t check. Always examine files thoroughly!',
+                learningPoints: [
+                    'Always read files completely from top to bottom',
+                    'Hidden information can be placed in unexpected locations',
+                    'Forensic analysis requires attention to detail'
+                ]
+            },
+            {
+                id: 'phishing',
+                title: 'Spot the Phish',
+                category: 'Social Engineering',
+                difficulty: 'Easy',
+                icon: '🎣',
+                description: 'Two emails — one\'s safe, one\'s fake. Find the phishing attempt.',
+                hint: 'Look for strange links, spelling errors, or unusual senders. Check if the sender\'s email address matches the company name. Hover over links to see where they really go (in this instance you can click the links to see what the full URLs). The format of the flag is "CTF{email_[A or B]_is_phishing}"',
+                flag: 'CTF{email_B_is_phishing}',
+                hasEmails: true,
+                emails: [
+                    {
+                        id: 'A',
+                        from: 'ship-confirm@amazon.com',
+                        subject: 'Your Amazon.com order has shipped',
+                        body: 'Hello,\n\nGood news! Your order has been shipped and will arrive by Thursday, November 14.\n\n<strong>Order Details:</strong>\nOrder #123-4567890-1234567\nWireless Mouse - Black\nQuantity: 1\n\nTracking Number: 1Z999AA10123456784',
+                        link: 'Track your package',
+                        linkUrl: 'https://www.amazon.com/gp/css/order-history',
+                        footer: 'This email was sent from a notification-only address that cannot accept incoming email. Please do not reply to this message.\n\n© 2024, Amazon.com, Inc. or its affiliates. All rights reserved. Amazon, Amazon.com and the Amazon.com logo are registered trademarks of Amazon.com, Inc. or its affiliates.',
+                        legitimate: true
+                    },
+                    {
+                        id: 'B',
+                        from: 'security-alert@amaz0n-security.net',
+                        subject: 'URGENT: Your Account Has Been Suspended!!!',
+                        body: 'Dear Valued Customer,\n\nYour Amazon account has been suspended due to suspicious activity detected on November 11, 2024.\n\n<strong style="color: #dc2626;">IMMEDIATE ACTION REQUIRED</strong>\n\nYou must verify your identity within 24 hours or your account will be permanently deleted along with all order history and saved payment methods.',
+                        link: 'VERIFY MY ACCOUNT NOW',
+                        linkUrl: 'http://amaz0n-verify.tk/secure-login',
+                        footer: 'Amazon Security Department\n© 2024 Amazon Inc. All rights reserved.\n\nIf you did not request this, please ignore this email.',
+                        legitimate: false
+                    }
+                ],
+                explanation: 'Email B is the phishing attempt! Red flags include:\n\n1. <strong>Suspicious sender domain:</strong> "amaz0n-security.net" instead of "amazon.com" (notice the zero instead of letter O)\n2. <strong>Creates urgency and fear:</strong> "URGENT", "suspended", "24 hours", "permanently deleted"\n3. <strong>Suspicious link:</strong> "amaz0n-verify.tk" (using a free .tk domain instead of amazon.com)\n4. <strong>Poor branding:</strong> Slight differences in logo and colors\n5. <strong>Demands immediate action:</strong> Pressure tactics to make you act without thinking\n\nReal Amazon emails come from @amazon.com domains, never ask you to verify credentials via email links, and don\'t use threatening language.',
+                learningPoints: [
+                    'Check sender email addresses carefully - phishers use similar-looking domains',
+                    'Be suspicious of urgent or threatening language',
+                    'Hover over links before clicking to see the real URL',
+                    'Legitimate companies never ask for passwords via email'
+                ]
+            },
+            {
+                id: 'network',
+                title: 'Network Detective',
+                category: 'Log Analysis',
+                difficulty: 'Medium',
+                icon: '🌐',
+                description: 'Search the network log file carefully for clues.',
+                hint: 'Check for any suspicious or unusual text lines. Look for anything that stands out or doesn\'t look like normal network traffic. The flag is hidden among the log entries!',
+                flag: 'CTF{logs_tell_stories}',
+                hasFile: true,
+                fileContent: `[2024-11-10 08:15:23] 192.168.1.100 -> 10.0.0.5 : HTTP GET /index.html
+[2024-11-10 08:15:24] 192.168.1.101 -> 10.0.0.5 : HTTP GET /about.html
+[2024-11-10 08:15:25] 192.168.1.102 -> 10.0.0.5 : HTTP GET /contact.html
+[2024-11-10 08:15:26] 192.168.1.103 -> 10.0.0.5 : HTTP POST /login.php
+[2024-11-10 08:15:27] 192.168.1.104 -> 10.0.0.5 : HTTP GET /products.html
+[2024-11-10 08:15:31] 192.168.1.107 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:32] 192.168.1.108 -> 10.0.0.5 : HTTP GET /checkout.html
+[2024-11-10 08:15:33] 192.168.1.109 -> 10.0.0.5 : HTTP POST /payment.php
+[2024-11-10 08:15:34] 192.168.1.107 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:35] 192.168.1.108 -> 10.0.0.5 : HTTP GET /checkout.html
+[2024-11-10 08:15:37] 192.168.1.109 -> 10.0.0.5 : HTTP POST /payment.php
+[2024-11-10 08:15:38] 192.168.1.107 -> 10.0.0.5 : HTTP GET /search?q=camera.html
+[2024-11-10 08:15:39] 192.168.1.108 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:41] 192.168.1.109 -> 10.0.0.5 : HTTP POST /checkout.php
+[2024-11-10 08:15:43] 192.168.1.107 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:44] 192.168.1.108 -> 10.0.0.5 : HTTP GET /checkout.html
+[2024-11-10 08:15:45] 192.168.1.109 -> 10.0.0.5 : HTTP POST /payment.php
+[2024-11-10 08:15:47] 192.168.1.105 -> 10.0.0.5 : HTTP GET /search?q=laptops
+[2024-11-10 08:15:48] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product1.png
+[2024-11-10 08:15:47] 192.168.1.105 -> 10.0.0.5 : HTTP GET /images/product2.png
+[2024-11-10 08:15:48] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/logo.png
+[2024-11-10 08:15:49] 192.168.1.105 -> 10.0.0.5 : HTTP GET /search?q=tablet
+[2024-11-10 08:15:50] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product3.png
+[2024-11-10 08:15:51] 192.168.1.105 -> 10.0.0.5 : HTTP GET /images/product5.png
+[2024-11-10 08:15:52] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product7.png
+[2024-11-10 08:15:53] 192.168.1.105 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:54] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product10.png
+[2024-11-10 08:15:55] 192.168.1.105 -> 10.0.0.5 : HTTP GET /search?q=desk
+[2024-11-10 08:15:56] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/logo.png
+[2024-11-10 08:15:57] 192.168.1.105 -> 10.0.0.5 : HTTP GET /images/product31.png
+[2024-11-10 08:15:58] 192.168.1.106 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:15:59] 192.168.1.105 -> 10.0.0.5 : HTTP GET /images/product45.png
+[2024-11-10 08:16:02] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product51.png
+[2024-11-10 08:16:03] 192.168.1.105 -> 10.0.0.5 : HTTP GET /images/product53.png
+[2024-11-10 08:16:05] 192.168.1.106 -> 10.0.0.5 : HTTP GET /images/product55.png
+[2024-11-10 08:16:07] SUSPICIOUS: Hidden flag -> CTF{logs_tell_stories}
+[2024-11-10 08:16:09] 192.168.1.107 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:16:10] 192.168.1.108 -> 10.0.0.5 : HTTP GET /checkout.html
+[2024-11-10 08:16:11] 192.168.1.109 -> 10.0.0.5 : HTTP POST /payment.php
+[2024-11-10 08:16:12] 192.168.1.107 -> 10.0.0.5 : HTTP GET /cart.html
+[2024-11-10 08:16:13] 192.168.1.108 -> 10.0.0.5 : HTTP GET /checkout.html
+[2024-11-10 08:16:14] 192.168.1.109 -> 10.0.0.5 : HTTP POST /payment.php
+[2024-11-10 08:16:15] 192.168.1.110 -> 10.0.0.5 : HTTP GET /thankyou.html`,
+                fileName: 'network_log.txt',
+                explanation: 'Network logs record all traffic and activities. Security analysts examine logs to find suspicious patterns, unauthorised access attempts, or hidden data exfiltration. In this case, someone left a suspicious entry that doesn\'t match normal traffic patterns. Real-world log analysis involves processing millions of entries to find anomalies.',
+                learningPoints: [
+                    'Logs are crucial for detecting security incidents',
+                    'Analysts look for patterns that deviate from normal behavior',
+                    'Automated tools help process large log files',
+                    'Attackers sometimes leave traces in logs'
+                ]
+            },
+            {
+                id: 'sql',
+                title: 'The Login Bypass',
+                category: 'Web Security',
+                difficulty: 'Difficult',
+                icon: '💻',
+                description: 'A vulnerable login form is checking credentials using unsafe SQL. Can you bypass the authentication and reveal the flag?',
+                hint: 'Think about how the SQL query is constructed. What if you could add your own SQL code to the username field? In SQL, certain characters like quotes (\') and comment symbols (-- or #) have special meanings. What would happen if you closed the quote early and added a comment to ignore the rest of the query?',
+                flag: 'CTF{sql_injection_success}',
+                hasInteractiveLogin: true,
+                explanation: 'SQL injection is a serious vulnerability where attackers can manipulate database queries by inserting malicious SQL code. The -- characters start a comment in SQL, effectively ignoring everything after. By entering admin\'-- as the username, the query becomes: SELECT * FROM users WHERE username=\'admin\'-- which ignores the password check entirely. This is why developers must use parameterised queries or prepared statements.',
+                learningPoints: [
+                    'Never trust user input in SQL queries',
+                    'SQL injection can let attackers bypass authentication',
+                    'Always use parameterised queries or ORMs to prevent SQL injection',
+                    'Input validation alone is not enough - use prepared statements'
+                ]
+            }
+        ];
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('ctf-progress-new');
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        // Save progress to localStorage
+        function saveProgress(progress) {
+            localStorage.setItem('ctf-progress-new', JSON.stringify(progress));
+        }
+
+        // Escape HTML for display
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        let completedChallenges = loadProgress();
+
+        // Update progress bar
+        function updateProgress() {
+            const completed = Object.keys(completedChallenges).length;
+            const total = challenges.length;
+            const percent = (completed / total) * 100;
+            
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('progress-fill').style.width = percent + '%';
+
+            if (completed === total) {
+                document.getElementById('completion-banner').classList.add('visible');
+            }
+        }
+
+        // Download file handler
+        function downloadChallengeFile(challengeId) {
+            const challenge = challenges.find(c => c.id === challengeId);
+            if (challenge && challenge.fileContent) {
+                const blob = new Blob([challenge.fileContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = challenge.fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Render challenges
+        function renderChallenges() {
+            const container = document.getElementById('challenges-container');
+            container.innerHTML = '';
+
+            challenges.forEach(challenge => {
+                const isCompleted = completedChallenges[challenge.id];
+                
+                const challengeDiv = document.createElement('div');
+                challengeDiv.className = 'challenge' + (isCompleted ? ' completed' : '');
+                challengeDiv.id = 'challenge-' + challenge.id;
+
+                let content = '<div class="challenge-header"><div class="challenge-title-section"><div class="challenge-icon">' + challenge.icon + '</div><div class="challenge-info"><h2>' + challenge.title + '</h2><div class="challenge-tags"><span class="tag tag-category">' + challenge.category + '</span><span class="tag tag-' + challenge.difficulty.toLowerCase() + '">' + challenge.difficulty + '</span></div></div></div>';
+                
+                if (isCompleted) {
+                    content += '<span class="check-icon">✓</span>';
+                }
+                
+                content += '</div><div class="challenge-description">' + challenge.description + '</div>';
+
+                // Add file download section
+                if (challenge.hasFile && !isCompleted) {
+                    content += '<div class="download-section"><p style="color: #e9d5ff; margin-bottom: 0.5rem;">📥 Download the challenge file:</p><button class="download-button" onclick="downloadChallengeFile(\'' + challenge.id + '\')">Download ' + challenge.fileName + '</button></div>';
+                }
+
+                if (challenge.codeSnippet || challenge.metadataSnippet) {
+                    content += `
+                        <div class="code-snippet">
+                            <pre>${challenge.codeSnippet || challenge.metadataSnippet}</pre>
+                        </div>
+                    `;
+                }
+
+                // Add interactive login simulator
+                if (challenge.hasInteractiveLogin && !isCompleted) {
+                    content += '<div class="login-simulator">';
+                    content += '<h3>🔐 Vulnerable Login System</h3>';
+                    content += '<div class="login-form">';
+                    content += '<div class="form-group">';
+                    content += '<label for="username-' + challenge.id + '">Username:</label>';
+                    content += '<input type="text" id="username-' + challenge.id + '" placeholder="Enter username">';
+                    content += '</div>';
+                    content += '<div class="form-group">';
+                    content += '<label for="password-' + challenge.id + '">Password:</label>';
+                    content += '<input type="password" id="password-' + challenge.id + '" placeholder="Enter password">';
+                    content += '</div>';
+                    content += '<button class="login-button" onclick="attemptLogin(\'' + challenge.id + '\')">Login</button>';
+                    content += '<div class="sql-query-display" id="sql-display-' + challenge.id + '">SQL Query will appear here...</div>';
+                    content += '<div id="login-result-' + challenge.id + '"></div>';
+                    content += '</div>';
+                    content += '</div>';
+                }
+
+                // Add emails display
+                if (challenge.hasEmails && !isCompleted) {
+                    content += '<div style="display: grid; gap: 1rem; margin-bottom: 1rem;">';
+                    challenge.emails.forEach(function(email) {
+                        content += '<div class="email-container">';
+                        content += '<div class="email-label">Email ' + email.id + '</div>';
+                        content += '<div class="email-header">';
+                        
+                        // Amazon logo SVG
+                        if (email.legitimate) {
+                            content += '<svg class="email-logo" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg"><text x="0" y="20" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FF9900">amazon</text><path d="M 15 22 Q 50 28 85 22" stroke="#FF9900" stroke-width="2" fill="none"/><path d="M 80 20 L 85 22 L 80 24" fill="#FF9900"/></svg>';
+                        } else {
+                            content += '<svg class="email-logo" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg"><text x="0" y="20" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#dc2626">amaz0n</text><path d="M 15 22 Q 50 28 85 22" stroke="#dc2626" stroke-width="2" fill="none"/><path d="M 80 20 L 85 22 L 80 24" fill="#dc2626"/></svg>';
+                        }
+                        
+                        content += '<div class="email-from"><strong>From:</strong> ' + email.from + '</div>';
+                        content += '<div class="email-subject">' + email.subject + '</div>';
+                        content += '</div>';
+                        
+                        content += '<div class="email-body">';
+                        content += email.body.replace(/\n/g, '<br>');
+                        content += '<br><br>';
+                        content += '<a href="#" class="email-link' + (email.legitimate ? '' : ' suspicious') + '" onclick="event.preventDefault(); alert(\'Link: ' + email.linkUrl + '\');">' + email.link + '</a>';
+                        content += '</div>';
+                        
+                        content += '<div class="email-footer">' + email.footer.replace(/\n/g, '<br>') + '</div>';
+                        content += '</div>';
+                    });
+                    content += '</div>';
+                }
+
+                if (!isCompleted) {
+                    content += '<button class="hint-button" onclick="toggleHint(\'' + challenge.id + '\')">💡 <span id="hint-text-' + challenge.id + '">Show Hint</span></button>';
+                    content += '<div class="hint-box" id="hint-' + challenge.id + '">' + challenge.hint + '</div>';
+                    content += '<div class="answer-section"><input type="text" class="answer-input" id="answer-' + challenge.id + '" placeholder="Enter flag (format: CTF{...})" onkeypress="if(event.key === \'Enter\') submitAnswer(\'' + challenge.id + '\')"><button class="submit-button" onclick="submitAnswer(\'' + challenge.id + '\')">Submit</button></div>';
+                    content += '<div class="feedback feedback-incorrect" id="feedback-' + challenge.id + '">✗ Incorrect flag. Try again or check the hint!</div>';
+                } else {
+                    content += '<div class="feedback feedback-correct visible">✓ Challenge Completed!</div>';
+                }
+
+                content += '<div class="explanation ' + (isCompleted ? 'visible' : '') + '" id="explanation-' + challenge.id + '"><h3>Explanation</h3><p>' + challenge.explanation + '</p><h4>Key Learning Points:</h4><ul>';
+                
+                challenge.learningPoints.forEach(function(point) {
+                    content += '<li>' + point + '</li>';
+                });
+                
+                content += '</ul></div>';
+
+                challengeDiv.innerHTML = content;
+                container.appendChild(challengeDiv);
+            });
+        }
+
+        function toggleHint(challengeId) {
+            const hintBox = document.getElementById('hint-' + challengeId);
+            const hintText = document.getElementById('hint-text-' + challengeId);
+            
+            if (hintBox.classList.contains('visible')) {
+                hintBox.classList.remove('visible');
+                hintText.textContent = 'Show Hint';
+            } else {
+                hintBox.classList.add('visible');
+                hintText.textContent = 'Hide Hint';
+            }
+        }
+
+        function attemptLogin(challengeId) {
+            const username = document.getElementById('username-' + challengeId).value;
+            const password = document.getElementById('password-' + challengeId).value;
+            const sqlDisplay = document.getElementById('sql-display-' + challengeId);
+            const resultDiv = document.getElementById('login-result-' + challengeId);
+
+            // Build the vulnerable SQL query
+            const sqlQuery = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
+            
+            // Display the SQL query
+            sqlDisplay.textContent = 'Executed SQL Query:\n' + sqlQuery;
+
+            // Check for SQL injection
+            const isInjection = username.includes("'--") || username.includes("'#") || username.includes("' OR '1'='1");
+            
+            if (isInjection) {
+                // Successful SQL injection
+                resultDiv.innerHTML = '<div class="login-result success">✓ Login Successful! Authentication bypassed!</div>';
+                resultDiv.innerHTML += '<div class="flag-reveal">🎉 FLAG REVEALED: CTF{sql_injection_success}</div>';
+                
+                // Auto-fill the answer and mark as complete after a short delay
+                setTimeout(function() {
+                    const answerInput = document.getElementById('answer-' + challengeId);
+                    if (answerInput) {
+                        answerInput.value = 'CTF{sql_injection_success}';
+                    }
+                    // Scroll to the submit button
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 1000);
+            } else {
+                // Failed login attempt
+                resultDiv.innerHTML = '<div class="login-result failure">✗ Login Failed: Invalid username or password</div>';
+            }
+        }
+
+
+        function submitAnswer(challengeId) {
+            const challenge = challenges.find(function(c) { return c.id === challengeId; });
+            const input = document.getElementById('answer-' + challengeId);
+            const feedback = document.getElementById('feedback-' + challengeId);
+            
+            if (input.value.trim() === challenge.flag) {
+                // Correct answer
+                completedChallenges[challengeId] = true;
+                saveProgress(completedChallenges);
+                updateProgress();
+                renderChallenges();
+                
+                // Scroll to explanation
+                setTimeout(function() {
+                    document.getElementById('challenge-' + challengeId).scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                }, 100);
+            } else {
+                // Incorrect answer
+                feedback.classList.add('visible');
+                setTimeout(function() {
+                    feedback.classList.remove('visible');
+                }, 2000);
+            }
+        }
+
+        // Initialize
+        updateProgress();
+        renderChallenges();
+    </script>
+</body>
+</html>
